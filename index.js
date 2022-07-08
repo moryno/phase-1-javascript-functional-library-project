@@ -1,103 +1,71 @@
-const standardizeInput = (collection)=> {
+const checkCollection = (collection) => {
     return (collection instanceof Array) ? collection.slice() : Object.values(collection);
-} 
-
-const myEach =(collection, callback)=> {
-    const newCollection = standardizeInput(collection);
-
-    for (let index = 0; index < newCollection.length; index++) {
-        callback(newCollection[index]);
-    }
-
-    return collection;
+}
+const myEach = (collection, callback) => {
+   const newCollection = checkCollection(collection);
+   for(const element of newCollection){
+    callback(element)
+   }
+   
+   return collection;
 }
 
-const myMap = (collection, callback)=>{
-    const newCollection = standardizeInput(collection);
-    let newArray = new Array();
-
-    for (let index = 0; index < newCollection.length; index++) {
-        newArray.push(callback(newCollection[index]))
+const myMap = (collection, callback) => {
+    const newCollection = checkCollection(collection);
+    const newColl = new Array();
+    for(const element of newCollection){
+         newColl.push(callback(element))
     }
-
-    return newArray;
-  
+    return newColl;
 }
 
 const myReduce = (collection, callback, acc) => {
-    let newCollection = standardizeInput(collection);
-
-    if (!acc) {
+    let newCollection = checkCollection(collection);
+    if(!acc){
         acc = newCollection[0];
-        newCollection = newCollection.slice(1);
+        newCollection = newCollection.slice(1)
     }
-
-    const len = newCollection.length;
-
-    for (let i = 0; i < len; i++) {
-        acc = callback(acc, newCollection[i], newCollection);
+    for(const element of newCollection){
+        acc = callback(acc, element, newCollection)
     }
     return acc;
 }
-const myFind =(collection, predicate)=>{
-    const newCollection = standardizeInput(collection);
-    for (let index = 0; index < newCollection.length; index++) {
-        if(predicate(newCollection[index])) return newCollection[index];
-    }
-    return undefined;
 
-}
-const myFilter = (collection, predicate)=>{
-    const newCollection = standardizeInput(collection);
-    const newArr = new Array();
-    for (let index = 0; index < newCollection.length; index++) {
-        if(predicate(newCollection[index])) newArr.push(newCollection[index]);
+const myFind = (collection, predicate) =>{
+    const newCollection = checkCollection(collection);
+    for(const element of newCollection){
+        if(predicate(element)) return element;
     }
-    return newArr;
-
+    
 }
-const mySize = collection=> {
-    const newCollection = standardizeInput(collection);
+
+const myFilter = (collection, predicate) => {
+    const newCollection = checkCollection(collection);
+    const newArray = new Array()
+   for(const element of newCollection){
+    if(predicate(element)) newArray.push(element)
+   }
+   return newArray;
+}
+
+const mySize = (collection) => {
+    const newCollection = checkCollection(collection);
     return newCollection.length;
 }
 
-//arrays
-
-const myFirst = (arr, stop = false)=> {
-    return (stop) ? arr.slice(0, stop) : arr[0];
+const myFirst = (array, n) => {
+    return (n ? array.slice(0, n) : array[0] )
 }
 
-const myLast =(arr, start = false)=> {
-    return (start) ? arr.slice(arr.length - start, arr.length) : arr[arr.length - 1];
+const myLast = (array, n) => {
+    return (n ? array.slice(array.length - n, ) : array[array.length -1])
 }
 
-const mySortBy = (arr, callback) => {
-    const newArr = [...arr];
-    return newArr.sort(function (a, b) {
-        if (callback(a) > callback(b)) {
-            return 1;
-        } else if (callback(b) > callback(a)) {
-            return -1;
-        } else {
-            return 0;
-        }
-    });
-}
-// Object Functions
-
-const myKeys =obj=> {
-    const keys = [];
-    for (let key in obj) {
-        keys.push(key);
-    }
-    return keys;
+const myKeys = (object) => {
+    return Object.keys(object);
 }
 
-const myValues = obj=> {
-    const values = [];
-    for (let key in obj) {
-        values.push(obj[key]);
-    }
-    return values;
-
+const myValues = (object) => {
+    return Object.values(object)
 }
+
